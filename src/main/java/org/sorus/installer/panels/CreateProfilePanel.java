@@ -2,16 +2,17 @@ package org.sorus.installer.panels;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.commons.io.IOUtils;
 import org.sorus.installer.launcherprofiles.Installation;
 import org.sorus.installer.launcherprofiles.LauncherProfiles;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -23,6 +24,7 @@ public class CreateProfilePanel extends BasePanel {
 
     private final JComboBox<String> minecraftInstallSelection;
     private final JComboBox<String> clientVersionSelection;
+    private final JLabel doneLabel;
 
     public CreateProfilePanel(String minecraftPath) {
         this.minecraftPath = minecraftPath;
@@ -67,6 +69,9 @@ public class CreateProfilePanel extends BasePanel {
         installButton.setLocation(140, 315);
         installButton.addActionListener(this::install);
         this.add(installButton);
+        doneLabel = new JLabel();
+        doneLabel.setSize(100, 30);
+        this.add(doneLabel);
     }
 
     private void install(ActionEvent e) {
@@ -82,18 +87,48 @@ public class CreateProfilePanel extends BasePanel {
             LauncherProfiles launcherProfiles = gson.fromJson(stringBuilder.toString(), LauncherProfiles.class);
             Installation installation = new Installation();
             String memory = System.getProperty("sun.arch.data.model").equals("64") ? "2" : "1";
+            String version = (String) clientVersionSelection.getSelectedItem();
             installation.created = "1970-01-01T00:00:00.000Z";
             installation.lastUsed = "1970-01-01T00:00:00.000Z";
             installation.lastVersionId = (String) minecraftInstallSelection.getSelectedItem();
             installation.name = "Sorus - " + clientVersionSelection.getSelectedItem();
             installation.type = "custom";
-            installation.javaArgs = "-Xmx" + memory + "G -Xms" + memory + "G " + "-javaagent:Sorus/Sorus.jar=version=" + clientVersionSelection.getSelectedItem();
+            installation.javaArgs = "-Xmx" + memory + "G -Xms" + memory + "G " + "-javaagent:Sorus/client/" + version + ".jar=version=" + version;
             launcherProfiles.profiles.put("Sorus", installation);
             FileWriter fileWriter = new FileWriter(launcherProfile);
             fileWriter.write(gson.toJson(launcherProfiles));
             fileWriter.close();
+            new Thread(() -> {
+                doneLabel.setLocation(165, 345);
+                this.doneLabel.setText("Installing...");
+                try {
+                    this.downloadIfDifferent(new URL("https://github.com/SorusClient/Sorus-Resources/raw/master/client/" + version + ".jar"), new File(minecraftPath + "/sorus/client/" + version + ".jar"));
+                } catch(IOException ex) {
+                    ex.printStackTrace();
+                }
+                doneLabel.setLocation(175, 345);
+                this.doneLabel.setText("Done.");
+            }).start();
         } catch(IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void downloadIfDifferent(URL url, File file) throws IOException {
+        InputStream inputStream = url.openStream();
+        boolean needToDownload;
+        file.getParentFile().mkdirs();
+        try {
+            InputStream inputStream1 = new FileInputStream(file);
+            needToDownload = !IOUtils.contentEquals(inputStream, inputStream1);
+            inputStream1.close();
+        } catch(FileNotFoundException e) {
+            needToDownload = true;
+        }
+        if(needToDownload) {
+            ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         }
     }
 

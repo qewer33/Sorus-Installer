@@ -9,4 +9,5 @@ repositories {
 
 dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
