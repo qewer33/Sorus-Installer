@@ -3,7 +3,8 @@ package org.sorus.installer;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Installer!");
+        MainFrame mainFrame = new MainFrame();
+        mainFrame.create();
     }
 
 }

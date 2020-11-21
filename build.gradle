@@ -1,4 +1,12 @@
 plugins {
     id 'java'
-    id "com.github.sherter.google-java-format" version "0.8"
+    id 'com.github.sherter.google-java-format' version '0.8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 }
