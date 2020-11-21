@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
     public void create() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = 380, y = 540;
+        this.setTitle("Sorus Installer");
         this.setLocation((int) (dimension.getWidth() / 2 - x / 2), (int) (dimension.getHeight() / 2 - y / 2));
         this.setSize(x, y);
         this.setResizable(false);

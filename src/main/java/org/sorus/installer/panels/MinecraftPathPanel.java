@@ -13,19 +13,19 @@ public class MinecraftPathPanel extends BasePanel {
     public MinecraftPathPanel() {
         JLabel jLabel = new JLabel();
         jLabel.setText("Minecraft Directory");
-        jLabel.setLocation(135, 205);
+        jLabel.setLocation(135, 175);
         jLabel.setSize(new Dimension(115, 30));
         this.add(jLabel);
         jTextField = new JTextField();
         jTextField.setText(this.getMinecraftPath());
         jTextField.setSize(new Dimension(250, 30));
-        jTextField.setLocation(65, 235);
+        jTextField.setLocation(65, 205);
         jTextField.setCaretPosition(jTextField.getText().length());
         this.add(jTextField);
         JButton jButton = new JButton();
         jButton.setText("Next");
         jButton.setSize(new Dimension(100, 30));
-        jButton.setLocation(140, 275);
+        jButton.setLocation(140, 245);
         jButton.addActionListener(this::onNextButtonPress);
         this.add(jButton);
     }
