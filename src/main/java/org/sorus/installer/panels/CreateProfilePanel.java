@@ -37,7 +37,13 @@ public class CreateProfilePanel extends BasePanel {
         File minecraft = new File(minecraftPath);
         File versionsFile = new File(minecraft, "versions");
         for(File file : Objects.requireNonNull(versionsFile.listFiles(File::isDirectory))) {
-            minecraftInstallSelection.addItem(file.getName());
+            boolean added = false;
+            for(String string : versions) {
+                if(file.getName().contains(string) && !added) {
+                    added = true;
+                    minecraftInstallSelection.addItem(file.getName());
+                }
+            }
         }
         minecraftInstallSelection.setSize(new Dimension(250, 30));
         minecraftInstallSelection.setLocation(65, 155);
