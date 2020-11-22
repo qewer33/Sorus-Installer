@@ -24,13 +24,15 @@ public class CreateProfilePanel extends BasePanel {
 
     private final JComboBox<String> minecraftInstallSelection;
     private final JComboBox<String> clientVersionSelection;
-    private final JLabel doneLabel;
+    JButton installButton;
+    private final JLabel doneLabel = new JLabel();
 
     public CreateProfilePanel(String minecraftPath) {
         this.minecraftPath = minecraftPath;
         JLabel minecraftInstallLabel = new JLabel();
+        minecraftInstallLabel.setForeground(Color.WHITE);
         minecraftInstallLabel.setText("Minecraft Installation");
-        minecraftInstallLabel.setLocation(135, 125);
+        minecraftInstallLabel.setLocation(120, 215);
         minecraftInstallLabel.setSize(new Dimension(205, 30));
         this.add(minecraftInstallLabel);
         minecraftInstallSelection = new JComboBox<>();
@@ -46,36 +48,44 @@ public class CreateProfilePanel extends BasePanel {
             }
         }
         minecraftInstallSelection.setSize(new Dimension(250, 30));
-        minecraftInstallSelection.setLocation(65, 155);
+        minecraftInstallSelection.setLocation(65, 245);
         this.add(minecraftInstallSelection);
+
         JLabel clientVersionLabel = new JLabel();
+        clientVersionLabel.setForeground(Color.WHITE);
         clientVersionLabel.setText("Client Version");
-        clientVersionLabel.setLocation(155, 185);
+        clientVersionLabel.setLocation(145, 275);
         clientVersionLabel.setSize(new Dimension(95, 30));
         this.add(clientVersionLabel);
+
         clientVersionSelection = new JComboBox<>();
         for(String version : versions) {
             clientVersionSelection.addItem(version);
         }
         clientVersionSelection.setSize(new Dimension(250, 30));
-        clientVersionSelection.setLocation(65, 215);
+        clientVersionSelection.setLocation(65, 305);
         this.add(clientVersionSelection);
+
         JLabel mappingsLabel = new JLabel();
+        mappingsLabel.setForeground(Color.WHITE);
         mappingsLabel.setText("Mappings");
-        mappingsLabel.setLocation(165, 245);
+        mappingsLabel.setLocation(156, 335);
         mappingsLabel.setSize(new Dimension(95, 30));
         this.add(mappingsLabel);
+
         JTextField mappingsSelection = new JTextField();
         mappingsSelection.setSize(new Dimension(250, 30));
-        mappingsSelection.setLocation(65, 275);
+        mappingsSelection.setLocation(65, 365);
         this.add(mappingsSelection);
-        JButton installButton = new JButton();
+
+        installButton = new JButton();
         installButton.setText("Install");
         installButton.setSize(new Dimension(100, 30));
-        installButton.setLocation(140, 315);
+        installButton.setLocation(260, 494);
         installButton.addActionListener(this::install);
         this.add(installButton);
-        doneLabel = new JLabel();
+
+        doneLabel.setForeground(Color.WHITE);
         doneLabel.setSize(100, 30);
         this.add(doneLabel);
     }
@@ -105,15 +115,16 @@ public class CreateProfilePanel extends BasePanel {
             fileWriter.write(gson.toJson(launcherProfiles));
             fileWriter.close();
             new Thread(() -> {
-                doneLabel.setLocation(165, 345);
+                doneLabel.setLocation(20, 494);
                 this.doneLabel.setText("Installing...");
                 try {
                     this.downloadIfDifferent(new URL("https://github.com/SorusClient/Sorus-Resources/raw/master/client/" + version + ".jar"), new File(minecraftPath + "/sorus/client/" + version + ".jar"));
                 } catch(IOException ex) {
                     ex.printStackTrace();
                 }
-                doneLabel.setLocation(175, 345);
+                doneLabel.setLocation(20, 494);
                 this.doneLabel.setText("Done.");
+                this.installButton.setEnabled(false);
             }).start();
         } catch(IOException ex) {
             ex.printStackTrace();
@@ -136,6 +147,12 @@ public class CreateProfilePanel extends BasePanel {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(MinecraftPathPanel.bgImage, 0, 0, null);
     }
 
 }
