@@ -32,7 +32,7 @@ public class CreateProfilePanel extends BasePanel {
         JLabel minecraftInstallLabel = new JLabel();
         minecraftInstallLabel.setForeground(Color.WHITE);
         minecraftInstallLabel.setText("Minecraft Installation");
-        minecraftInstallLabel.setLocation(120, 215);
+        minecraftInstallLabel.setLocation(190 - minecraftInstallLabel.getFontMetrics(minecraftInstallLabel.getFont()).stringWidth("Minecraft Directory") / 2, 215);
         minecraftInstallLabel.setSize(new Dimension(205, 30));
         this.add(minecraftInstallLabel);
         minecraftInstallSelection = new JComboBox<>();
@@ -54,7 +54,7 @@ public class CreateProfilePanel extends BasePanel {
         JLabel clientVersionLabel = new JLabel();
         clientVersionLabel.setForeground(Color.WHITE);
         clientVersionLabel.setText("Client Version");
-        clientVersionLabel.setLocation(145, 275);
+        clientVersionLabel.setLocation(190 - clientVersionLabel.getFontMetrics(clientVersionLabel.getFont()).stringWidth("Client Version") / 2, 275);
         clientVersionLabel.setSize(new Dimension(95, 30));
         this.add(clientVersionLabel);
 
@@ -69,7 +69,7 @@ public class CreateProfilePanel extends BasePanel {
         JLabel mappingsLabel = new JLabel();
         mappingsLabel.setForeground(Color.WHITE);
         mappingsLabel.setText("Mappings");
-        mappingsLabel.setLocation(156, 335);
+        mappingsLabel.setLocation(190 - mappingsLabel.getFontMetrics(mappingsLabel.getFont()).stringWidth("Mappings") / 2, 335);
         mappingsLabel.setSize(new Dimension(95, 30));
         this.add(mappingsLabel);
 
@@ -152,7 +152,7 @@ public class CreateProfilePanel extends BasePanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(MinecraftPathPanel.bgImage, 0, 0, null);
+        g.drawImage(this.bgImage, 0, 0, null);
     }
 
 }
