@@ -12,3 +12,14 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'com.formdev', name: 'flatlaf', version: '0.44'
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.sorus.installer.Main'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

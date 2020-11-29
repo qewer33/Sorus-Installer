@@ -1,9 +1,5 @@
 package org.sorus.installer.panels;
 
-import org.sorus.installer.OS;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -64,8 +60,12 @@ public class MinecraftPathPanel extends BasePanel {
         errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
         errorLabel.setSize(300, 30);
         this.add(errorLabel);
-    }
+  }
 
+  private void onNextButtonPress(ActionEvent e) {
+    this.displayPanel(new CreateProfilePanel(jTextField.getText()));
+  }
+  
     // This string gets the .minecraft path
     private String getMinecraftPath() {
         switch (OS.getOS()) {
@@ -147,6 +147,15 @@ public class MinecraftPathPanel extends BasePanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(this.bgImage, 0, 0, null);
-    }
+  private void openFileChooser(ActionEvent e) {
+    dirSelect.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    int returnVal = dirSelect.showOpenDialog(null);
 
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      File file = dirSelect.getSelectedFile();
+      jTextField.setText(file.getAbsolutePath());
+    } else {
+      jTextField.setText(this.getMinecraftPath());
+    }
+  }
 }

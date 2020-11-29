@@ -1,5 +1,4 @@
 package org.sorus.installer;
-
 import org.sorus.installer.panels.MinecraftPathPanel;
 
 import javax.imageio.ImageIO;
@@ -38,5 +37,4 @@ public class MainFrame extends JFrame {
         this.getContentPane().add(new MinecraftPathPanel(), "origin");
         cardLayout.show(this.getContentPane(), "origin");
     }
-
 }
