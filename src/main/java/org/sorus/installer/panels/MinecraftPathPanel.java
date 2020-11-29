@@ -1,5 +1,9 @@
 package org.sorus.installer.panels;
 
+import org.sorus.installer.OS;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -9,11 +13,8 @@ import java.io.StringWriter;
 
 public class MinecraftPathPanel extends BasePanel {
 
-    private JButton fileChooserButton;
-    private JTextField mcdirField;
-    private JLabel mcdirLabel;
-    private JButton nextButton;
-    private JLabel errorLabel;
+    private final JTextField mcdirField;
+    private final JLabel errorLabel;
 
     final JFileChooser dirSelect = new JFileChooser();
 
@@ -22,7 +23,7 @@ public class MinecraftPathPanel extends BasePanel {
 
         try {
             Icon folderIcon = new ImageIcon(ImageIO.read(MinecraftPathPanel.class.getClassLoader().getResourceAsStream("folder.png")));
-            fileChooserButton = new JButton();
+            JButton fileChooserButton = new JButton();
             fileChooserButton.setIcon(folderIcon);
             fileChooserButton.setLocation(265, 245);
             fileChooserButton.setSize(50, 30);
@@ -33,7 +34,7 @@ public class MinecraftPathPanel extends BasePanel {
             e.printStackTrace();
         }
 
-        mcdirLabel = new JLabel();
+        JLabel mcdirLabel = new JLabel();
         mcdirLabel.setForeground(Color.WHITE);
         mcdirLabel.setText("Minecraft Directory");
         mcdirLabel.setLocation(190 - mcdirLabel.getFontMetrics(mcdirLabel.getFont()).stringWidth("Minecraft Directory") / 2, 215);
@@ -47,7 +48,7 @@ public class MinecraftPathPanel extends BasePanel {
         mcdirField.setCaretPosition(mcdirField.getText().length());
         this.add(mcdirField);
 
-        nextButton = new JButton();
+        JButton nextButton = new JButton();
         nextButton.setText("Next");
         nextButton.setSize(100, 30);
         nextButton.setLocation(260, 494);
@@ -60,10 +61,6 @@ public class MinecraftPathPanel extends BasePanel {
         errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
         errorLabel.setSize(300, 30);
         this.add(errorLabel);
-  }
-
-  private void onNextButtonPress(ActionEvent e) {
-    this.displayPanel(new CreateProfilePanel(jTextField.getText()));
   }
   
     // This string gets the .minecraft path
@@ -132,14 +129,10 @@ public class MinecraftPathPanel extends BasePanel {
         errorDialog.setVisible(true);
     }
 
-    // This boolean checks if the path entered is a valid Minecraft directory
-    // (all it does really is to check if the last 10 letters of the textfield text equals "minecraft").
+    // This boolean checks if the path entered is a valid Minecraft directory by checking if it has some of the standard subdirectories
     private boolean checkMcDirError() {
-        if (mcdirField.getText().length() > 10 && mcdirField.getText().substring(mcdirField.getText().length() - 9).equals("minecraft") ||
-                mcdirField.getText().length() > 11 && mcdirField.getText().substring(mcdirField.getText().length() - 10).equals("minecraft/") ||
-                mcdirField.getText().length() < 11) {
-            return false;
-        } else return true;
+        File file = new File(mcdirField.getText());
+        return new File(file, "versions").exists() && new File(file, "screenshots").exists() && new File("resourcepacks").exists();
     }
 
     // This function overrides the panels paintComponent method and sets the background image
@@ -147,15 +140,5 @@ public class MinecraftPathPanel extends BasePanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(this.bgImage, 0, 0, null);
-  private void openFileChooser(ActionEvent e) {
-    dirSelect.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    int returnVal = dirSelect.showOpenDialog(null);
-
-    if (returnVal == JFileChooser.APPROVE_OPTION) {
-      File file = dirSelect.getSelectedFile();
-      jTextField.setText(file.getAbsolutePath());
-    } else {
-      jTextField.setText(this.getMinecraftPath());
     }
-  }
 }

@@ -6,7 +6,6 @@ import org.apache.commons.io.IOUtils;
 import org.sorus.installer.launcherprofiles.Installation;
 import org.sorus.installer.launcherprofiles.LauncherProfiles;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,28 +18,22 @@ import java.util.Scanner;
 
 public class CreateProfilePanel extends BasePanel {
 
-    private static String[] versions = {"1.7.10", "1.8.9"};
-    private static String[] mappings = {"","1.8.9-forge","1.7.10-forge"};
+    private static final String[] versions = {"1.7.10", "1.8.9"};
+    private static final String[] mappings = {"","1.7.10-forge","1.8.9-forge"};
 
-    private String minecraftPath;
+    private final String minecraftPath;
 
-    private JLabel minecraftInstallLabel;
-    private JComboBox<String> minecraftInstallSelection;
-    private JLabel clientVersionLabel;
-    private JComboBox<String> clientVersionSelection;
-    private JLabel mappingsLabel;
-    private JComboBox<String> mappingsSelection;
-    private JButton installButton;
-    private JLabel doneLabel;
-    private JLabel errorLabel;
-
-    final JFileChooser dirSelect = new JFileChooser();
+    private final JComboBox<String> minecraftInstallSelection;
+    private final JComboBox<String> clientVersionSelection;
+    private final JButton installButton;
+    private final JLabel doneLabel;
+    private final JLabel errorLabel;
 
     // Constructor
     public CreateProfilePanel(String minecraftPath) {
         this.minecraftPath = minecraftPath;
 
-        minecraftInstallLabel = new JLabel();
+        JLabel minecraftInstallLabel = new JLabel();
         minecraftInstallLabel.setForeground(Color.WHITE);
         minecraftInstallLabel.setText("Minecraft Installation");
         minecraftInstallLabel.setLocation(190 - minecraftInstallLabel.getFontMetrics(minecraftInstallLabel.getFont()).stringWidth("Minecraft Directory") / 2, 215);
@@ -63,7 +56,7 @@ public class CreateProfilePanel extends BasePanel {
         minecraftInstallSelection.setLocation(65, 245);
         this.add(minecraftInstallSelection);
 
-        clientVersionLabel = new JLabel();
+        JLabel clientVersionLabel = new JLabel();
         clientVersionLabel.setForeground(Color.WHITE);
         clientVersionLabel.setText("Client Version");
         clientVersionLabel.setLocation(190 - clientVersionLabel.getFontMetrics(clientVersionLabel.getFont()).stringWidth("Client Version") / 2, 275);
@@ -78,14 +71,14 @@ public class CreateProfilePanel extends BasePanel {
         clientVersionSelection.setLocation(65, 305);
         this.add(clientVersionSelection);
 
-        mappingsLabel = new JLabel();
+        JLabel mappingsLabel = new JLabel();
         mappingsLabel.setForeground(Color.WHITE);
         mappingsLabel.setText("Mappings");
         mappingsLabel.setLocation(190 - mappingsLabel.getFontMetrics(mappingsLabel.getFont()).stringWidth("Mappings") / 2, 335);
         mappingsLabel.setSize(new Dimension(95, 30));
         this.add(mappingsLabel);
 
-        mappingsSelection = new JComboBox<>(mappings);
+        JComboBox<String> mappingsSelection = new JComboBox<>(mappings);
         mappingsSelection.setSize(new Dimension(250, 30));
         mappingsSelection.setLocation(65, 365);
         this.add(mappingsSelection);
@@ -114,17 +107,7 @@ public class CreateProfilePanel extends BasePanel {
     // If there is a java exception thrown, it calls showErrorDialog().
     private void checkErrors(ActionEvent e) {
         try {
-            if (checkVersionsMatching()) {
-                if (checkForgeMappings()) {
-                    install();
-                } else {
-                    errorLabel.setText("Mappings and MC version don't match");
-                    errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
-                }
-            } else {
-                errorLabel.setText("Sorus and MC versions don't match");
-                errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
-            }
+            install();
         } catch(Exception ex) {
             showErrorDialog(ex);
         }
@@ -217,23 +200,6 @@ public class CreateProfilePanel extends BasePanel {
 
         errorDialog.add(errorScrollPane);
         errorDialog.setVisible(true);
-    }
-
-    // This boolean checks if Sorus and Minecraft versions match
-    private boolean checkVersionsMatching() {
-        if (minecraftInstallSelection.getSelectedItem().toString().indexOf(clientVersionSelection.getSelectedItem().toString()) == -1) {
-            return false;
-        } else return true;
-    }
-
-    // This boolean checks if mappings are selected while installing the client on forge
-    private boolean checkForgeMappings() {
-        if (minecraftInstallSelection.getSelectedItem().toString().indexOf("forge") != -1 && mappingsSelection.getSelectedItem().toString().equals("") ||
-                minecraftInstallSelection.getSelectedItem().toString().indexOf("forge") != -1 && minecraftInstallSelection.getSelectedItem().toString().indexOf("1.8.9") != -1 && mappingsSelection.getSelectedItem().toString().equals("1.7.10-forge") ||
-                minecraftInstallSelection.getSelectedItem().toString().indexOf("forge") != -1 && minecraftInstallSelection.getSelectedItem().toString().indexOf("1.7.10") != -1 && mappingsSelection.getSelectedItem().toString().equals("1.8.9-forge") ||
-                minecraftInstallSelection.getSelectedItem().toString().indexOf("forge") == -1 && ! mappingsSelection.getSelectedItem().toString().equals("")) {
-            return false;
-        } else return true;
     }
 
     // This function overrides the panels paintComponent method and sets the background image
