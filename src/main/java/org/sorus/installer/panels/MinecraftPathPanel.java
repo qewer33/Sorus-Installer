@@ -61,7 +61,7 @@ public class MinecraftPathPanel extends BasePanel {
 
         errorLabel = new JLabel();
         errorLabel.setForeground(Color.WHITE);
-        errorLabel.setLocation(20, 494);
+        errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
         errorLabel.setSize(300, 30);
         this.add(errorLabel);
     }
@@ -98,10 +98,12 @@ public class MinecraftPathPanel extends BasePanel {
             if (!checkMcDirError()) {
                 this.displayPanel(new CreateProfilePanel(mcdirField.getText()));
             } else {
-                errorLabel.setText("Not a valid Minecraft directory");
+                errorLabel.setText("Please enter a valid Minecraft directory");
+                errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
             }
         } catch (Exception ex) {
-            errorLabel.setText("Unexpected error");
+            errorLabel.setText(ex.getClass().getSimpleName());
+            errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
             showErrorDialog(ex);
         }
     }
@@ -111,7 +113,7 @@ public class MinecraftPathPanel extends BasePanel {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         JDialog errorDialog = new JDialog();
-        errorDialog.setTitle("Unexpected Error");
+        errorDialog.setTitle(e.getClass().getSimpleName());
         errorDialog.setSize(400, 400);
         errorDialog.setLocation((int) (screenSize.getWidth() / 2 - 400 / 2), (int) (screenSize.getHeight() / 2 - 400 / 2));
 
