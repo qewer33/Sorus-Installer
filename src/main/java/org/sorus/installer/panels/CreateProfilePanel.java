@@ -129,11 +129,21 @@ public class CreateProfilePanel extends BasePanel {
   // selections.
   // If there is a java exception thrown, it calls showErrorDialog().
   private void checkErrors(ActionEvent e) {
-    try {
-      install();
-    } catch (Exception ex) {
-      showErrorDialog(ex);
-    }
+      try {
+          if (checkVersionsMatching()) {
+              if (checkForgeMappings()) {
+                  install();
+              } else {
+                  errorLabel.setText("Mappings and MC version don't match");
+                  errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+              }
+          } else {
+              errorLabel.setText("Sorus and MC versions don't match");
+              errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+          }
+      } catch(Exception ex) {
+          showErrorDialog(ex);
+      }
   }
 
   private void install2() throws Exception {
@@ -316,6 +326,23 @@ public class CreateProfilePanel extends BasePanel {
 
     errorDialog.add(errorScrollPane);
     errorDialog.setVisible(true);
+  }
+
+  // This boolean checks if Sorus and Minecraft versions match
+  private boolean checkVersionsMatching() {
+    return minecraftInstallSelection
+        .getSelectedItem()
+        .toString()
+        .contains(clientVersionSelection.getSelectedItem().toString());
+  }
+
+  // This boolean checks if mappings are selected while installing the client on forge
+  private boolean checkForgeMappings() {
+    String lowercase = ((String) minecraftInstallSelection.getSelectedItem()).toLowerCase();
+    String mappings = (String) mappingsSelection.getSelectedItem();
+    return lowercase.contains("forge") && mappings.equals("")
+        || !lowercase.contains("forge")
+            && !mappings.equals("");
   }
 
   // This function overrides the panels paintComponent method and sets the background image

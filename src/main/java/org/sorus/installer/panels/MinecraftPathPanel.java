@@ -158,9 +158,9 @@ public class MinecraftPathPanel extends BasePanel {
   // some of the standard subdirectories
   private boolean checkMcDirError() {
     File file = new File(mcdirField.getText());
-    return new File(file, "versions").exists()
+    return !(new File(file, "versions").exists()
         && new File(file, "screenshots").exists()
-        && new File("resourcepacks").exists();
+        && new File(file, "resourcepacks").exists());
   }
 
   // This function overrides the panels paintComponent method and sets the background image
