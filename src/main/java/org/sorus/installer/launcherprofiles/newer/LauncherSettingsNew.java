@@ -1,6 +1,6 @@
-package org.sorus.installer.launcherprofiles;
+package org.sorus.installer.launcherprofiles.newer;
 
-public class LauncherSettings {
+public class LauncherSettingsNew {
 
   public boolean crashAssistance;
   public boolean enableAdvanced;

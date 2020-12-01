@@ -4,8 +4,5 @@ import javax.swing.*;
 
 public class InstallingPanel extends JPanel {
 
-    InstallingPanel() {
-
-    }
-
+  InstallingPanel() {}
 }
