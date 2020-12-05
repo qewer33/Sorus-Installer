@@ -20,7 +20,7 @@ public class BasePanel extends JPanel {
     }
   }
 
-  protected void displayPanel(CreateProfilePanel basePanel) {
+  protected void displayPanel(BasePanel basePanel) {
     Container container = this.getParent();
     String name = String.valueOf(container.getComponents().length);
     container.add(basePanel, name);
