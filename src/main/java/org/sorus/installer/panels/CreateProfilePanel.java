@@ -28,18 +28,25 @@ public class CreateProfilePanel extends BasePanel {
 
   private final String minecraftPath;
 
+  private final JLabel minecraftInstallLabel;
   private final JComboBox<String> minecraftInstallSelection;
+  private final JLabel clientVersionLabel;
   private final JComboBox<String> clientVersionSelection;
+  private final JLabel mappingsLabel;
   private final JComboBox<String> mappingsSelection;
   private final JButton installButton;
   private final JLabel doneLabel;
   private final JLabel errorLabel;
 
+  private JLabel loadingIcon;
+  private ImageIcon loadingGif;
+  private ImageIcon doneImage;
+
   // Constructor
   public CreateProfilePanel(String minecraftPath) {
     this.minecraftPath = minecraftPath;
 
-    JLabel minecraftInstallLabel = new JLabel();
+    minecraftInstallLabel = new JLabel();
     minecraftInstallLabel.setForeground(Color.WHITE);
     minecraftInstallLabel.setText("Minecraft Installation");
     minecraftInstallLabel.setLocation(
@@ -68,7 +75,7 @@ public class CreateProfilePanel extends BasePanel {
     minecraftInstallSelection.setLocation(65, 245);
     this.add(minecraftInstallSelection);
 
-    JLabel clientVersionLabel = new JLabel();
+    clientVersionLabel = new JLabel();
     clientVersionLabel.setForeground(Color.WHITE);
     clientVersionLabel.setText("Client Version");
     clientVersionLabel.setLocation(
@@ -89,7 +96,7 @@ public class CreateProfilePanel extends BasePanel {
     clientVersionSelection.setLocation(65, 305);
     this.add(clientVersionSelection);
 
-    JLabel mappingsLabel = new JLabel();
+    mappingsLabel = new JLabel();
     mappingsLabel.setForeground(Color.WHITE);
     mappingsLabel.setText("Mappings");
     mappingsLabel.setLocation(
@@ -123,6 +130,14 @@ public class CreateProfilePanel extends BasePanel {
         435);
     errorLabel.setSize(300, 30);
     this.add(errorLabel);
+
+    try {
+      URL url = getClass().getResource("/loading.gif");
+      loadingGif = new ImageIcon(url);
+      doneImage = new ImageIcon(getClass().getResource("/checkmark.png"));
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 
   // This function checks if there are any java exceptions thrown or there are any problems with the
@@ -186,6 +201,9 @@ public class CreateProfilePanel extends BasePanel {
     File minecraft = new File(minecraftPath);
     File launcherProfile = new File(minecraft, "launcher_profiles.json");
     try {
+
+      showInstallingIcon();
+
       Scanner scanner = new Scanner(launcherProfile);
       StringBuilder stringBuilder = new StringBuilder();
       while (scanner.hasNextLine()) {
@@ -268,14 +286,17 @@ public class CreateProfilePanel extends BasePanel {
                       new File(minecraftPath + "/sorus/client/" + version + ".jar"));
                 } catch (IOException ex) {
                   errorLabel.setText(ex.getClass().getSimpleName());
+                  errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
                   showErrorDialog(ex);
                 }
+                this.loadingIcon.setIcon(doneImage);
                 this.doneLabel.setText("Done.");
                 this.installButton.setEnabled(false);
               })
           .start();
     } catch (IOException ex) {
       errorLabel.setText(ex.getClass().getSimpleName());
+      errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
       showErrorDialog(ex);
     }
   }
@@ -296,6 +317,22 @@ public class CreateProfilePanel extends BasePanel {
       FileOutputStream fileOutputStream = new FileOutputStream(file);
       fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
     }
+  }
+
+  private void showInstallingIcon() {
+    minecraftInstallSelection.setVisible(false);
+    clientVersionSelection.setVisible(false);
+    installButton.setVisible(false);
+    mappingsSelection.setVisible(false);
+    mappingsLabel.setVisible(false);
+    minecraftInstallLabel.setVisible(false);
+    clientVersionLabel.setVisible(false);
+
+    loadingIcon = new JLabel();
+    loadingIcon.setIcon(loadingGif);
+    loadingIcon.setLocation(90,200);
+    loadingIcon.setSize(200,200);
+    this.add(loadingIcon);
   }
 
   // This function takes an exception as a parameter and opens a new window that displays the stack
