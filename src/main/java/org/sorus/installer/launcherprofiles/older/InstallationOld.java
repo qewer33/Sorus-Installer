@@ -1,6 +1,6 @@
-package org.sorus.installer.launcherprofiles;
+package org.sorus.installer.launcherprofiles.older;
 
-public class Installation {
+public class InstallationOld {
 
   public String created;
   public String icon;
