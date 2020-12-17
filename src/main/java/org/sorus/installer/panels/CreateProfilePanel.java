@@ -144,21 +144,36 @@ public class CreateProfilePanel extends BasePanel {
   // selections.
   // If there is a java exception thrown, it calls showErrorDialog().
   private void checkErrors(ActionEvent e) {
-      try {
-          if (checkVersionsMatching()) {
-              if (! checkForgeMappings()) {
-                  install();
-              } else {
-                  errorLabel.setText("Mappings and MC version don't match");
-                  errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
-              }
-          } else {
-              errorLabel.setText("Sorus and MC versions don't match");
+    try {
+      if(checkVersionsMatching()) {
+        if(checkForgeMappings()) {
+          install();
+        } else {
+          errorLabel.setText("Mappings and MC version don't match");
+          errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+        }
+      } else {
+        errorLabel.setText("Sorus and MC versions don't match");
+        errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+        try {
+          if(checkVersionsMatching()) {
+            if(!checkForgeMappings()) {
+              install();
+            } else {
+              errorLabel.setText("Mappings and MC version don't match");
               errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+            }
+          } else {
+            errorLabel.setText("Sorus and MC versions don't match");
+            errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
           }
-      } catch(Exception ex) {
+        } catch(Exception ex) {
           showErrorDialog(ex);
+        }
       }
+    } catch(Exception ex) {
+      showErrorDialog(ex);
+    }
   }
 
   private void install2() throws Exception {
@@ -289,6 +304,23 @@ public class CreateProfilePanel extends BasePanel {
                   errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
                   showErrorDialog(ex);
                 }
+                if (!((String) mappingsSelection.getSelectedItem()).isEmpty()) {
+                  try {
+                    this.downloadIfDifferent(
+                        new URL(
+                            "https://github.com/SorusClient/Sorus-Resources/raw/master/mappings/"
+                                + mappingsSelection.getSelectedItem()
+                                + ".txt"),
+                        new File(
+                            minecraftPath
+                                + "/sorus/mappings/"
+                                + mappingsSelection.getSelectedItem()
+                                + ".jar"));
+                  } catch (IOException ex) {
+                    errorLabel.setText(ex.getClass().getSimpleName());
+                    showErrorDialog(ex);
+                  }
+                }
                 this.loadingIcon.setIcon(doneImage);
                 this.doneLabel.setText("Done.");
                 this.installButton.setEnabled(false);
@@ -378,8 +410,7 @@ public class CreateProfilePanel extends BasePanel {
     String lowercase = ((String) minecraftInstallSelection.getSelectedItem()).toLowerCase();
     String mappings = (String) mappingsSelection.getSelectedItem();
     return lowercase.contains("forge") && mappings.equals("")
-        || !lowercase.contains("forge")
-            && !mappings.equals("");
+        || !lowercase.contains("forge") && !mappings.equals("");
   }
 
   // This function overrides the panels paintComponent method and sets the background image
