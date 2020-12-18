@@ -145,33 +145,31 @@ public class CreateProfilePanel extends BasePanel {
   // If there is a java exception thrown, it calls showErrorDialog().
   private void checkErrors(ActionEvent e) {
     try {
-      if(checkVersionsMatching()) {
-        if(checkForgeMappings()) {
+      if (checkVersionsMatching()) {
+        if (!checkForgeMappings()) {
           install();
         } else {
-          errorLabel.setText("Mappings and MC version don't match");
-          errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+          setErrorLabelText("Mappings and MC version don't match");
         }
       } else {
-        errorLabel.setText("Sorus and MC versions don't match");
-        errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+        setErrorLabelText("Sorus and MC versions don't match");
         try {
-          if(checkVersionsMatching()) {
-            if(!checkForgeMappings()) {
+          if (checkVersionsMatching()) {
+            if (!checkForgeMappings()) {
               install();
             } else {
-              errorLabel.setText("Mappings and MC version don't match");
-              errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+              setErrorLabelText("Mappings and MC version don't match");
             }
           } else {
-            errorLabel.setText("Sorus and MC versions don't match");
-            errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+            setErrorLabelText("Sorus and MC versions don't match");
           }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
+          setErrorLabelText(ex.getClass().getSimpleName());
           showErrorDialog(ex);
         }
       }
-    } catch(Exception ex) {
+    } catch (Exception ex) {
+      setErrorLabelText(ex.getClass().getSimpleName());
       showErrorDialog(ex);
     }
   }
@@ -290,7 +288,7 @@ public class CreateProfilePanel extends BasePanel {
       }
       new Thread(
               () -> {
-                errorLabel.setText("");
+                setErrorLabelText("");
                 this.doneLabel.setText("Installing...");
                 try {
                   this.downloadIfDifferent(
@@ -300,8 +298,7 @@ public class CreateProfilePanel extends BasePanel {
                               + ".jar"),
                       new File(minecraftPath + "/sorus/client/" + version + ".jar"));
                 } catch (IOException ex) {
-                  errorLabel.setText(ex.getClass().getSimpleName());
-                  errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+                  setErrorLabelText(ex.getClass().getSimpleName());
                   showErrorDialog(ex);
                 }
                 if (!((String) mappingsSelection.getSelectedItem()).isEmpty()) {
@@ -317,7 +314,7 @@ public class CreateProfilePanel extends BasePanel {
                                 + mappingsSelection.getSelectedItem()
                                 + ".jar"));
                   } catch (IOException ex) {
-                    errorLabel.setText(ex.getClass().getSimpleName());
+                    setErrorLabelText(ex.getClass().getSimpleName());
                     showErrorDialog(ex);
                   }
                 }
@@ -327,8 +324,7 @@ public class CreateProfilePanel extends BasePanel {
               })
           .start();
     } catch (IOException ex) {
-      errorLabel.setText(ex.getClass().getSimpleName());
-      errorLabel.setLocation(190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2, 435);
+      setErrorLabelText(ex.getClass().getSimpleName());
       showErrorDialog(ex);
     }
   }
@@ -362,8 +358,8 @@ public class CreateProfilePanel extends BasePanel {
 
     loadingIcon = new JLabel();
     loadingIcon.setIcon(loadingGif);
-    loadingIcon.setLocation(90,200);
-    loadingIcon.setSize(200,200);
+    loadingIcon.setLocation(90, 200);
+    loadingIcon.setSize(200, 200);
     this.add(loadingIcon);
   }
 
@@ -411,6 +407,14 @@ public class CreateProfilePanel extends BasePanel {
     String mappings = (String) mappingsSelection.getSelectedItem();
     return lowercase.contains("forge") && mappings.equals("")
         || !lowercase.contains("forge") && !mappings.equals("");
+  }
+
+  // This function sets the text of the error label and centers it
+  private void setErrorLabelText(String s) {
+    errorLabel.setText(s);
+    errorLabel.setLocation(
+        190 - errorLabel.getFontMetrics(errorLabel.getFont()).stringWidth(errorLabel.getText()) / 2,
+        435);
   }
 
   // This function overrides the panels paintComponent method and sets the background image

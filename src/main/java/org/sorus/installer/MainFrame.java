@@ -14,7 +14,8 @@ public class MainFrame extends JFrame {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
     try {
-      logo = ImageIO.read(MinecraftPathPanel.class.getClassLoader().getResourceAsStream("logo.png"));
+      logo =
+          ImageIO.read(MinecraftPathPanel.class.getClassLoader().getResourceAsStream("logo.png"));
     } catch (Exception e) {
       e.printStackTrace();
     }
