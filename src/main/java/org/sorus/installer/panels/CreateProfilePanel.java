@@ -146,7 +146,7 @@ public class CreateProfilePanel extends BasePanel {
   private void checkErrors(ActionEvent e) {
     try {
       if(checkVersionsMatching()) {
-        if(checkForgeMappings()) {
+        if(! checkForgeMappings()) {
           install();
         } else {
           errorLabel.setText("Mappings and MC version don't match");
