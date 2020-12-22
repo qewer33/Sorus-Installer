@@ -312,7 +312,7 @@ public class CreateProfilePanel extends BasePanel {
                             minecraftPath
                                 + "/sorus/mappings/"
                                 + mappingsSelection.getSelectedItem()
-                                + ".jar"));
+                                + ".txt"));
                   } catch (IOException ex) {
                     setErrorLabelText(ex.getClass().getSimpleName());
                     showErrorDialog(ex);
