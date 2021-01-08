@@ -2,6 +2,8 @@ package org.sorus.installer.panels;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class SelectVersionPanel extends BasePanel {
@@ -10,8 +12,9 @@ public class SelectVersionPanel extends BasePanel {
     JButton injectButton;
     JButton optifineButton;
     JButton forgeButton;
+    JButton learnMore;
 
-    SelectVersionPanel() {
+    SelectVersionPanel() throws IOException {
         label = new JLabel("Installation Mode");
         label.setSize(300,20);
         label.setLocation(
@@ -20,23 +23,35 @@ public class SelectVersionPanel extends BasePanel {
         label.setForeground(Color.WHITE);
         this.add(label);
 
-        injectButton = new JButton("Injection");
-        injectButton.setSize(130,30);
-        injectButton.setLocation(125,265);
+        injectButton = new JButton();
+        ImageIcon i1 = new ImageIcon(ImageIO.read(
+                SelectVersionPanel.class.getClassLoader().getResourceAsStream("mclogo.png")));
+        injectButton.setIcon(i1);
+        injectButton.setToolTipText("Injection");
+        injectButton.setSize(96,96);
+        injectButton.setLocation(21,255);
         injectButton.setFocusable(false);
         injectButton.addActionListener(this::openInjectionPanel);
         this.add(injectButton);
 
-        optifineButton = new JButton("Optifine");
-        optifineButton.setSize(130,30);
-        optifineButton.setLocation(125,310);
+        optifineButton = new JButton();
+        ImageIcon i2 = new ImageIcon(ImageIO.read(
+                SelectVersionPanel.class.getClassLoader().getResourceAsStream("oflogo.png")));
+        optifineButton.setIcon(i2);
+        optifineButton.setToolTipText("Optifine");
+        optifineButton.setSize(96,96);
+        optifineButton.setLocation(140,255);
         optifineButton.setFocusable(false);
         optifineButton.addActionListener(this::openOptifinePanel);
         this.add(optifineButton);
 
-        forgeButton = new JButton("Forge");
-        forgeButton.setSize(130,30);
-        forgeButton.setLocation(125,355);
+        forgeButton = new JButton();
+        ImageIcon i3 = new ImageIcon(ImageIO.read(
+                SelectVersionPanel.class.getClassLoader().getResourceAsStream("forgelogo.png")));
+        forgeButton.setIcon(i3);
+        forgeButton.setToolTipText("Forge");
+        forgeButton.setSize(96,96);
+        forgeButton.setLocation(259,255);
         forgeButton.setFocusable(false);
         forgeButton.addActionListener(this::openForgePanel);
         this.add(forgeButton);
