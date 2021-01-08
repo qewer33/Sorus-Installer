@@ -4,14 +4,24 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 public class InstallationModeInfoPanel extends BasePanel {
 
+    BufferedImage infoImage;
+
     JButton back;
 
     InstallationModeInfoPanel() throws IOException {
+        try {
+            infoImage =
+                    ImageIO.read(Objects.requireNonNull(BasePanel.class.getClassLoader().getResourceAsStream("infoPanel.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         back = new JButton(" Back");
         ImageIcon i4 = new ImageIcon(ImageIO.read(
                 Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("back.png"))));
@@ -36,7 +46,7 @@ public class InstallationModeInfoPanel extends BasePanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.bgImage, 0, 0, null);
+        g.drawImage(infoImage, 0, 0, null);
     }
 
 }

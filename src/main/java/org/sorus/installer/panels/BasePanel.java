@@ -3,6 +3,7 @@ package org.sorus.installer.panels;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -14,7 +15,7 @@ public class BasePanel extends JPanel {
     this.setLayout(null);
     try {
       bgImage =
-          ImageIO.read(BasePanel.class.getClassLoader().getResourceAsStream("background.png"));
+          ImageIO.read(Objects.requireNonNull(BasePanel.class.getClassLoader().getResourceAsStream("background.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
