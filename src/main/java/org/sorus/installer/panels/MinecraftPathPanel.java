@@ -159,7 +159,6 @@ public class MinecraftPathPanel extends BasePanel {
   private boolean checkMcDirError() {
     File file = new File(mcdirField.getText());
     return !(new File(file, "versions").exists()
-        && new File(file, "screenshots").exists()
         && new File(file, "resourcepacks").exists());
   }
 
