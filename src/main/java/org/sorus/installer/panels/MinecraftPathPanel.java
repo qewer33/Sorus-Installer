@@ -104,7 +104,7 @@ public class MinecraftPathPanel extends BasePanel {
   private void checkErrors(ActionEvent e) {
     try {
       if (!checkMcDirError()) {
-        this.displayPanel(new CreateProfilePanel(mcdirField.getText()));
+        this.displayPanel(new SelectVersionPanel());
       } else {
         errorLabel.setText("Please enter a valid Minecraft directory");
         errorLabel.setLocation(
