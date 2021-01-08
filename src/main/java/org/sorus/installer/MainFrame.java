@@ -2,6 +2,7 @@ package org.sorus.installer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import org.sorus.installer.panels.MinecraftPathPanel;
@@ -15,7 +16,7 @@ public class MainFrame extends JFrame {
 
     try {
       logo =
-          ImageIO.read(MinecraftPathPanel.class.getClassLoader().getResourceAsStream("logo.png"));
+          ImageIO.read(Objects.requireNonNull(MinecraftPathPanel.class.getClassLoader().getResourceAsStream("logo.png")));
     } catch (Exception e) {
       e.printStackTrace();
     }
