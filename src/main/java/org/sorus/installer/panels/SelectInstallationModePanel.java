@@ -9,13 +9,15 @@ import javax.swing.*;
 
 public class SelectInstallationModePanel extends BasePanel {
 
-    JLabel label;
-    JButton injectButton;
-    JButton optifineButton;
-    JButton forgeButton;
-    JButton learnMore;
+    private final String minecraftPath;
+    private JLabel label;
+    private JButton injectButton;
+    private JButton optifineButton;
+    private JButton forgeButton;
+    private JButton learnMore;
 
-    SelectInstallationModePanel() throws IOException {
+    public SelectInstallationModePanel(String minecraftPath) throws IOException {
+        this.minecraftPath = minecraftPath;
         label = new JLabel("Installation Mode");
         label.setSize(300,20);
         label.setLocation(
@@ -43,7 +45,7 @@ public class SelectInstallationModePanel extends BasePanel {
         optifineButton.setSize(96,96);
         optifineButton.setLocation(140,245);
         optifineButton.setFocusable(false);
-        optifineButton.addActionListener(this::openOptifinePanel);
+        optifineButton.addActionListener(this::openLaunchWrapperPanel);
         this.add(optifineButton);
 
         forgeButton = new JButton();
@@ -54,7 +56,8 @@ public class SelectInstallationModePanel extends BasePanel {
         forgeButton.setSize(96,96);
         forgeButton.setLocation(259,245);
         forgeButton.setFocusable(false);
-        forgeButton.addActionListener(this::openForgePanel);
+        //forgeButton.addActionListener(this::openForgePanel);
+        forgeButton.setEnabled(false);
         this.add(forgeButton);
 
         learnMore = new JButton(" Learn More");
@@ -71,11 +74,11 @@ public class SelectInstallationModePanel extends BasePanel {
     }
 
     void openInjectionPanel(ActionEvent e) {
-        this.displayPanel(new InjectionInstallationPanel());
+        this.displayPanel(new InjectionInstallationPanel(minecraftPath));
     }
 
-    void openOptifinePanel(ActionEvent e) {
-        this.displayPanel(new OptifineInstallationPanel());
+    void openLaunchWrapperPanel(ActionEvent e) {
+        this.displayPanel(new LaunchWrapperInstallationPanel(minecraftPath));
     }
 
     void openForgePanel(ActionEvent e) {
@@ -84,7 +87,7 @@ public class SelectInstallationModePanel extends BasePanel {
 
     void openInfoPanel(ActionEvent e) {
         try {
-            this.displayPanel(new InstallationModeInfoPanel());
+            this.displayPanel(new InstallationModeInfoPanel(minecraftPath));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
