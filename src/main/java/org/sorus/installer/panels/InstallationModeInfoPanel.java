@@ -10,11 +10,11 @@ import java.util.Objects;
 
 public class InstallationModeInfoPanel extends BasePanel {
 
-    BufferedImage infoImage;
+    private final String minecraftPath;
+    private BufferedImage infoImage;
 
-    JButton back;
-
-    InstallationModeInfoPanel() throws IOException {
+    public InstallationModeInfoPanel(String minecraftPath) throws IOException {
+        this.minecraftPath = minecraftPath;
         try {
             infoImage =
                     ImageIO.read(Objects.requireNonNull(BasePanel.class.getClassLoader().getResourceAsStream("infoPanel.png")));
@@ -22,7 +22,7 @@ public class InstallationModeInfoPanel extends BasePanel {
             e.printStackTrace();
         }
 
-        back = new JButton(" Back");
+        JButton back = new JButton(" Back");
         ImageIcon i4 = new ImageIcon(ImageIO.read(
                 Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("back.png"))));
         back.setIcon(i4);
@@ -34,9 +34,9 @@ public class InstallationModeInfoPanel extends BasePanel {
         this.add(back);
     }
 
-    void goBack(ActionEvent e) {
+    private void goBack(ActionEvent e) {
         try {
-            this.displayPanel(new SelectInstallationModePanel());
+            this.displayPanel(new SelectInstallationModePanel(minecraftPath));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

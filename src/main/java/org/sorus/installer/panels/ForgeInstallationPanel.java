@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class ForgeInstallationPanel extends BasePanel {
 
-    ForgeInstallationPanel() {
+    public ForgeInstallationPanel() {
 
     }
 

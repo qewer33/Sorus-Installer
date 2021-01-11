@@ -1,6 +1,6 @@
-package org.sorus.installer.launcherprofiles.older;
+package org.sorus.installer.launcherprofiles;
 
-public class ProfilePropertiesOld {
+public class ProfileProperties {
 
   public String name;
   public String profileId;
