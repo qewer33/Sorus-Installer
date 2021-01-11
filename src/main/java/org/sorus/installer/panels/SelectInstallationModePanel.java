@@ -11,9 +11,9 @@ public class SelectInstallationModePanel extends BasePanel {
 
     private final String minecraftPath;
     private JLabel label;
-    private JButton injectButton;
-    private JButton optifineButton;
-    private JButton forgeButton;
+    private JButton javaagentButton;
+    private JButton launcherwrapperButton;
+    private JButton otherButton;
     private JButton learnMore;
 
     public SelectInstallationModePanel(String minecraftPath) throws IOException {
@@ -26,39 +26,39 @@ public class SelectInstallationModePanel extends BasePanel {
         label.setForeground(Color.WHITE);
         this.add(label);
 
-        injectButton = new JButton();
+        javaagentButton = new JButton();
         ImageIcon i1 = new ImageIcon(ImageIO.read(
-                Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("mclogo.png"))));
-        injectButton.setIcon(i1);
-        injectButton.setToolTipText("Injection");
-        injectButton.setSize(96,96);
-        injectButton.setLocation(21,245);
-        injectButton.setFocusable(false);
-        injectButton.addActionListener(this::openInjectionPanel);
-        this.add(injectButton);
+                Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("javalogo.png"))));
+        javaagentButton.setIcon(i1);
+        javaagentButton.setToolTipText("Java Agent");
+        javaagentButton.setSize(96,96);
+        javaagentButton.setLocation(21,245);
+        javaagentButton.setFocusable(false);
+        javaagentButton.addActionListener(this::openInjectionPanel);
+        this.add(javaagentButton);
 
-        optifineButton = new JButton();
+        launcherwrapperButton = new JButton();
         ImageIcon i2 = new ImageIcon(ImageIO.read(
-                Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("oflogo.png"))));
-        optifineButton.setIcon(i2);
-        optifineButton.setToolTipText("Optifine");
-        optifineButton.setSize(96,96);
-        optifineButton.setLocation(140,245);
-        optifineButton.setFocusable(false);
-        optifineButton.addActionListener(this::openLaunchWrapperPanel);
-        this.add(optifineButton);
+                Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("mclogo.png"))));
+        launcherwrapperButton.setIcon(i2);
+        launcherwrapperButton.setToolTipText("Launcher Wrapper");
+        launcherwrapperButton.setSize(96,96);
+        launcherwrapperButton.setLocation(140,245);
+        launcherwrapperButton.setFocusable(false);
+        launcherwrapperButton.addActionListener(this::openLaunchWrapperPanel);
+        this.add(launcherwrapperButton);
 
-        forgeButton = new JButton();
+        otherButton = new JButton();
         ImageIcon i3 = new ImageIcon(ImageIO.read(
-                Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("forgelogo.png"))));
-        forgeButton.setIcon(i3);
-        forgeButton.setToolTipText("Forge");
-        forgeButton.setSize(96,96);
-        forgeButton.setLocation(259,245);
-        forgeButton.setFocusable(false);
-        //forgeButton.addActionListener(this::openForgePanel);
-        forgeButton.setEnabled(false);
-        this.add(forgeButton);
+                Objects.requireNonNull(SelectInstallationModePanel.class.getClassLoader().getResourceAsStream("questionmark.png"))));
+        otherButton.setIcon(i3);
+        //otherButton.setToolTipText("");
+        otherButton.setSize(96,96);
+        otherButton.setLocation(259,245);
+        otherButton.setFocusable(false);
+        otherButton.addActionListener(this::openForgePanel);
+        otherButton.setEnabled(false);
+        this.add(otherButton);
 
         learnMore = new JButton(" Learn More");
         ImageIcon i4 = new ImageIcon(ImageIO.read(
